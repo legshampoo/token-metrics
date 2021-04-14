@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 const gecko = require('./routes/gecko');
 
 app.use(logger);
@@ -21,17 +21,13 @@ function logger(req, res, next) {
   next();
 }
 
-function auth(req, res, next) {
-  console.log('Auth');
-  next();
-}
 
-app.listen(port, err => {
+app.listen(PORT, err => {
 
   if(err){
     return console.log('Error', err);
   }
   
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://localhost:${PORT}`)
 
 });
