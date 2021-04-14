@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 3000;
 const gecko = require('./routes/gecko');
 
 app.use(logger);
-// app.use(express.json()); //if we want to accept json posts
+app.use(express.json({ limit: '1mb' }));
 
 app.use('/gecko', gecko);
 
