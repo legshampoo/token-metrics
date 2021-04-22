@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
 const gecko = require('./routes/gecko');
 
 app.use(logger);
 app.use(express.json({ limit: '1mb' }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/gecko', gecko);
 
