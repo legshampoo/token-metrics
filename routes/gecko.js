@@ -6,19 +6,15 @@ let router = express.Router();
 
 const coins = require('../config/coin-list.js');
 
-//middleware that's only used on this router
-// router.use(function (req, res, next){
-//   console.log('router middleware:', req.url);
-//   next();
-// });
-
+const baseURI = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=';
 
 router
   .route('/coins/markets')
   .get(async (req, res) => {
-    console.log(req.query);
+    // console.log(req.query);
     // const api_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=100&page=1&sparkline=false';
-    var api_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=';
+    // var api_url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=';
+    var api_url = baseURI;
     
     coins.coinList.map((id, i) => {
       api_url += id + '%2C';
@@ -29,12 +25,21 @@ router
     const data = response.data;
     res.send(data);
   })
-  .post((req, res) => {
+  .post(async (req, res) => {
     console.log('POST');
-    // var d = JSON.parse(req.query.payload);
-    var d = req.body;
-    console.log(d);
-    res.send('one post');
+    var coinList = req.body;
+    console.log(coinList);
+
+    var api_url = baseURI;
+    coinList.map((id, i) => {
+      api_url += id + '%2C';
+    })
+
+    api_url += '&order=market_cap_desc&per_page=100&page=1&sparkline=false';
+
+    const response = await axios.get(api_url);
+    const data = response.data;
+    res.send(data);
   });
 
 // router
