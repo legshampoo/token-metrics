@@ -30,6 +30,7 @@ router
     res.send(data);
   })
   .post((req, res) => {
+    console.log('POST');
     console.log(req.query.payload);
     res.send('one post');
   });
