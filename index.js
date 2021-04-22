@@ -6,7 +6,8 @@ const gecko = require('./routes/gecko');
 
 app.use(logger);
 app.use(express.json({ limit: '1mb' }));
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use('/gecko', gecko);
 
