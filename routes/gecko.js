@@ -31,7 +31,8 @@ router
   })
   .post((req, res) => {
     console.log('POST');
-    console.log(req.query.payload);
+    var d = JSON.parse(req.query.payload);
+    console.log(d);
     res.send('one post');
   });
 
