@@ -21,7 +21,6 @@ module.exports = {
     console.log('token tx txns: ', transactions.length);
 
     const normalTxResult = await axios.get(uri_normalTx);
-    // console.log(normalTxResult.data.result);
     const normalTransactions = normalTxResult.data.result;
     transactions.push(...normalTransactions);
     console.log('after normal: ', transactions.length);
@@ -45,14 +44,12 @@ module.exports = {
       // };
 
       // const newTx = Object.assign(objectOrder, tx);
-      // console.log(newTx);
-      // console.log(typeof tx.tokenName);
+
       let tokenName;
       let tokenSymbol;
       let tokenDecimal;
       let isError;
       if(typeof tx.tokenName === 'undefined'){
-        // console.log('GOT IT');
         tokenName = 'null';
         tokenSymbol = 'null';
         tokenDecimal = 0;
@@ -64,21 +61,16 @@ module.exports = {
         isError = 'null';
       }
 
-      // console.log('type wallet: ', typeof wallet);
-      // console.log('wallet: ', wallet);
-      // console.log('from  : ', tx.from);
       let flow;
       if(tx.from.toUpperCase() === wallet.toUpperCase()){
-        // console.log('from!');
-        flow = 'in';
+        flow = 'out';
       }
       if(tx.to.toUpperCase() === wallet.toUpperCase()){
-        // console.log('to!');
-        flow = 'out';
+        flow = 'in';
       }
 
       const value = web3.utils.fromWei(tx.value, 'ether');
-      // console.log('value: ', value);
+      
       let obj = {
         time: tx.time,
         timeStamp: tx.timeStamp,
