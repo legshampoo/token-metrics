@@ -63,10 +63,10 @@ module.exports = {
 
       let flow;
       if(tx.from.toUpperCase() === wallet.toUpperCase()){
-        flow = 'out';
+        flow = 'OUT';
       }
       if(tx.to.toUpperCase() === wallet.toUpperCase()){
-        flow = 'in';
+        flow = 'IN';
       }
 
       const value = web3.utils.fromWei(tx.value, 'ether');
