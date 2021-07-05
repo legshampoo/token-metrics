@@ -99,9 +99,9 @@ module.exports = {
       return txns.blockNumber
     })
     
-    txns.map(tx => {
-      console.log(tx.blockNumber);
-    })
+    // txns.map(tx => {
+    //   console.log(tx.blockNumber);
+    // })
     // console.log(txns[txns.length - 1]);
     res.send(txns);
   },
