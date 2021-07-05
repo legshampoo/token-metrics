@@ -2,35 +2,31 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const gecko = require('./routes/gecko');
+// const gecko = require('./routes/gecko');
+const {
+  coinPrices
+} = require('./routes/gecko');
+const {
+  walletTransactions
+} = require('./routes/wallet');
+
+const logger = (req, res, next) => {
+  console.log('Logger: ', Date.now());
+  next()
+}
 
 app.use(logger);
 app.use(express.json({ limit: '1mb' }));
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use('/gecko', gecko);
 
 app.get('/', (req, res) => {
   res.send('Hello Worldz!');
 })
 
-app.get('/users', (req, res) => {
-  res.send('Users Page');
-})
-
-function logger(req, res, next) {
-  console.log('Log: ', Date.now());
-  next();
-}
-
+app.post('/coin-prices', coinPrices)
+app.post('/wallet-transactions', walletTransactions);
 
 app.listen(PORT, err => {
-
-  if(err){
-    return console.log('Error', err);
-  }
-  
-  console.log(`Example app listening at http://localhost:${PORT}`)
-
+  if(err){ return console.log('Error', err); }
+  console.log(`Sheets app listening at http://localhost:${PORT}`)
 });
