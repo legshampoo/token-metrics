@@ -95,13 +95,14 @@ module.exports = {
       txns.push(obj);
     });
 
-    let txSorted = _.sortBy(txns, () => {
-      return txns.blockNumber
-    })
-    
-    // txns.map(tx => {
-    //   console.log(tx.blockNumber);
+    // let txSorted = _.orderBy(txns, (o) => {
+    //   return o.blockNumber
     // })
+    let txSorted = _.orderBy(txns, ['blockNumber'], 'desc')
+    
+    txSorted.map(tx => {
+      console.log(tx.blockNumber);
+    })
     // console.log(txns[txns.length - 1]);
     res.send(txSorted);
   },
