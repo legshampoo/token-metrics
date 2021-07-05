@@ -95,7 +95,7 @@ module.exports = {
       txns.push(obj);
     });
 
-    _.sortBy(txns, () => {
+    let txSorted = _.sortBy(txns, () => {
       return txns.blockNumber
     })
     
@@ -103,7 +103,7 @@ module.exports = {
     //   console.log(tx.blockNumber);
     // })
     // console.log(txns[txns.length - 1]);
-    res.send(txns);
+    res.send(txSorted);
   },
   normalTransactions: async (req, res) => {
     console.log('Get Wallet Transactionz');
