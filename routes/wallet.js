@@ -18,20 +18,33 @@ module.exports = {
     let transactions = result.data.result;
     console.log('txns: ', transactions.length);
 
+    let txs = [];
     transactions.map(tx => {
       const timestamp = tx.timeStamp;
-      console.log(timestamp);
       const date = new Date(timestamp*1000);
       const dateFormatted = dateFormat(date, 'isoDateTime', true);
-      console.log(dateFormatted);
+      
       tx.time = dateFormatted;
+      // Create an object which will serve as the order template
+      let objectOrder = {
+        'time': null,
+        'timeStamp': null,
+        'blockNumber': null
+      };
+
+      const newTx = Object.assign(objectOrder, tx);
+      console.log(newTx);
+      txs.push(newTx);
     })
+
+
     
+    console.log(txs[0]);
     // const t = new Date(transactions[0].timeStamp).toString();
     // console.log(transactions[0].timeStamp)
     // const t = new Date(transactions[0].timestamp);
     
     // console.log(t.toString());
-    res.send(transactions);
+    res.send(txs);
   }
 }
