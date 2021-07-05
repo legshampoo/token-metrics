@@ -7,7 +7,8 @@ const {
   coinPrices
 } = require('./routes/gecko');
 const {
-  walletTransactions
+  walletTransactions,
+  normalTransactions
 } = require('./routes/wallet');
 
 const logger = (req, res, next) => {
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.post('/coin-prices', coinPrices)
 app.post('/wallet-transactions', walletTransactions);
+app.post('/normal-transactions', normalTransactions);
 
 app.listen(PORT, err => {
   if(err){ return console.log('Error', err); }
