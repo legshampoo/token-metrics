@@ -3,6 +3,7 @@ const axios = require('axios');
 const web3 = require('web3');
 const { DateTime } = require('luxon');
 const dateFormat = require('dateformat');
+const _ = require('lodash');
 
 const ETHERSCAN_API_KEY = 'WG3CNUR4BRCXMPPUWCWTGFV9X91KKCTRNW';
 
@@ -92,9 +93,16 @@ module.exports = {
       }
 
       txns.push(obj);
+    });
+
+    _.sortBy(txns, () => {
+      return txns.blockNumber
     })
     
-    console.log(txns[0]);
+    txns.map(tx => {
+      console.log(tx.blockNumber);
+    })
+    // console.log(txns[txns.length - 1]);
     res.send(txns);
   },
   normalTransactions: async (req, res) => {
