@@ -51,9 +51,9 @@ module.exports = {
       let tokenDecimal;
       let isError;
       if(typeof tx.tokenName === 'undefined'){
-        tokenName = 'null';
-        tokenSymbol = 'null';
-        tokenDecimal = 0;
+        tokenName = 'Ethereum';
+        tokenSymbol = 'ETH';
+        tokenDecimal = 18;
         isError = tx.isError;
       }else {
         tokenName = tx.tokenName;
