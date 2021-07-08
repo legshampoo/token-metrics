@@ -4,6 +4,8 @@ const web3 = require('web3');
 const { DateTime } = require('luxon');
 const dateFormat = require('dateformat');
 const _ = require('lodash');
+const BigNumber = require('bignumber.js');
+const ethers = require('ethers');
 
 const ETHERSCAN_API_KEY = 'WG3CNUR4BRCXMPPUWCWTGFV9X91KKCTRNW';
 
@@ -19,15 +21,15 @@ module.exports = {
     
     const tokenTxResult = await axios.get(uri_tokenTx);
     let transactions = tokenTxResult.data.result;
-    console.log('token tx txns: ', transactions.length);
+    // console.log('token tx txns: ', transactions.length);
 
     const normalTxResult = await axios.get(uri_normalTx);
     const normalTransactions = normalTxResult.data.result;
     transactions.push(...normalTransactions);
-    console.log('after normal: ', transactions.length);
+    // console.log('after normal: ', transactions.length);
 
-    console.log('first: ', transactions[0]);
-    console.log('last: ', transactions[transactions.length-1]);
+    // console.log('first: ', transactions[0]);
+    // console.log('last: ', transactions[transactions.length-1]);
 
     let txns = [];
     transactions.map(tx => {
@@ -58,7 +60,7 @@ module.exports = {
       }else {
         tokenName = tx.tokenName;
         tokenSymbol = tx.tokenSymbol.toUpperCase();
-        tokenDecimal = tx.tokenDecimal;
+        tokenDecimal = parseInt(tx.tokenDecimal);
         isError = 'null';
       }
 
@@ -71,12 +73,11 @@ module.exports = {
         flow = 'IN';
       }
 
-      const valueAdjusted = tx.value / (10 * (18 - tokenDecimal));
-      
-      // const valueEth = web3.utils.fromWei(tx.value, 'ether');
-      const valueEth = web3.utils.fromWei(valueAdjusted, 'ether');
-      //valueB = valueA / (10**(18-6))
-      // valueA = valueB * (10**(18-6))
+      // console.log(tokenSymbol);
+      const parse = ethers.utils.parseUnits(tx.value, 18-tokenDecimal);
+      const valueEth = web3.utils.fromWei(parse.toString(), 'ether');
+
+      // console.log('Value ETH: ', valueEth);
       
       let obj = {
         time: tx.time,
@@ -106,9 +107,9 @@ module.exports = {
     // })
     let txSorted = _.orderBy(txns, ['blockNumber'], 'desc')
     
-    txSorted.map(tx => {
-      console.log(tx.blockNumber);
-    })
+    // txSorted.map(tx => {
+    //   console.log(tx.blockNumber);
+    // })
     // console.log(txns[txns.length - 1]);
     res.send(txSorted);
   },
