@@ -57,7 +57,7 @@ module.exports = {
         isError = tx.isError;
       }else {
         tokenName = tx.tokenName;
-        tokenSymbol = tx.tokenSymbol;
+        tokenSymbol = tx.tokenSymbol.toUpperCase();
         tokenDecimal = tx.tokenDecimal;
         isError = 'null';
       }
