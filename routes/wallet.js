@@ -62,6 +62,7 @@ module.exports = {
         isError = 'null';
       }
 
+      
       let flow;
       if(tx.from.toUpperCase() === wallet.toUpperCase()){
         flow = 'OUT';
@@ -70,7 +71,12 @@ module.exports = {
         flow = 'IN';
       }
 
-      const value = web3.utils.fromWei(tx.value, 'ether');
+      const valueAdjusted = tx.value / (10 * (18 - tokenDecimal));
+      
+      // const valueEth = web3.utils.fromWei(tx.value, 'ether');
+      const valueEth = web3.utils.fromWei(valueAdjusted, 'ether');
+      //valueB = valueA / (10**(18-6))
+      // valueA = valueB * (10**(18-6))
       
       let obj = {
         time: tx.time,
@@ -79,7 +85,7 @@ module.exports = {
         contractAddress: tx.contractAddress,
         from: tx.from,
         to: tx.to,
-        value: value,
+        value: valueEth,
         flow: flow,
         tokenName: tokenName,
         tokenSymbol: tokenSymbol,
