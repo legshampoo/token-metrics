@@ -45,7 +45,7 @@ module.exports = {
     // console.log('tok x: ', tokenTransfers.length);
     // console.log('norm: ', normalTransactions.length);
     // console.log('internal: ', internalTransactions.length);
-    const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
+    // const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
     // console.log('sum: ', sum);
     let transactions = tokenTransfers.concat(normalTransactions);
     transactions = transactions.concat(internalTransactions);
