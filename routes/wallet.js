@@ -16,16 +16,40 @@ module.exports = {
     const wallets = req.body;
 
     const wallet = wallets[0];
-    const uri_tokenTx = `https://api.etherscan.io/api?module=account&action=tokentx&address=${wallet}&startblock=0&endblock=999999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`
+    const uri_tokenTransfer = `https://api.etherscan.io/api?module=account&action=tokentx&address=${wallet}&startblock=0&endblock=999999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`
     const uri_normalTx = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
+    const uri_internalTransactions = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
     
-    const tokenTxResult = await axios.get(uri_tokenTx);
-    let transactions = tokenTxResult.data.result;
+    const tokenTransferResult = await axios.get(uri_tokenTransfer);
+    let tokenTransfers = tokenTransferResult.data.result;
+    tokenTransfers.map(tx => {
+      tx.type = 'TOKEN_TRANSFER';
+    })
+    // console.log(tokenTransfers);
     // console.log('token tx txns: ', transactions.length);
 
     const normalTxResult = await axios.get(uri_normalTx);
-    const normalTransactions = normalTxResult.data.result;
-    transactions.push(...normalTransactions);
+    let normalTransactions = normalTxResult.data.result;
+    normalTransactions.map(tx => {
+      tx.type = 'NORMAL';
+    })
+
+    const internalTransactionsResult = await axios.get(uri_internalTransactions);
+    let internalTransactions = internalTransactionsResult.data.result;
+    internalTransactions.map(tx => {
+      tx.type = 'INTERNAL';
+    })
+    
+    console.log(internalTransactions);
+    // transactions.push(...normalTransactions);
+    console.log('tok x: ', tokenTransfers.length);
+    console.log('norm: ', normalTransactions.length);
+    console.log('internal: ', internalTransactions.length);
+    const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
+    console.log('sum: ', sum);
+    let transactions = tokenTransfers.concat(normalTransactions);
+    transactions = transactions.concat(internalTransactions);
+    console.log('array length: ', transactions.length);
     // console.log('after normal: ', transactions.length);
 
     // console.log('first: ', transactions[0]);
@@ -96,7 +120,8 @@ module.exports = {
         gasUsed: tx.gasUsed,
         cumulativeGasUsed: tx.cumulativeGasUsed,
         confirmations: tx.confirmations,
-        transactionIndex: tx.transactionIndex
+        transactionIndex: tx.transactionIndex,
+        type: tx.type
       }
 
       txns.push(obj);
