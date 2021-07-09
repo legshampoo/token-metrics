@@ -40,16 +40,16 @@ module.exports = {
       tx.type = 'INTERNAL';
     })
     
-    console.log(internalTransactions);
+    // console.log(internalTransactions);
     // transactions.push(...normalTransactions);
-    console.log('tok x: ', tokenTransfers.length);
-    console.log('norm: ', normalTransactions.length);
-    console.log('internal: ', internalTransactions.length);
+    // console.log('tok x: ', tokenTransfers.length);
+    // console.log('norm: ', normalTransactions.length);
+    // console.log('internal: ', internalTransactions.length);
     const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
-    console.log('sum: ', sum);
+    // console.log('sum: ', sum);
     let transactions = tokenTransfers.concat(normalTransactions);
     transactions = transactions.concat(internalTransactions);
-    console.log('array length: ', transactions.length);
+    // console.log('array length: ', transactions.length);
     // console.log('after normal: ', transactions.length);
 
     // console.log('first: ', transactions[0]);
