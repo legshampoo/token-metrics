@@ -20,6 +20,7 @@ module.exports = {
     const uri_normalTx = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
     const uri_internalTransactions = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
     
+    console.log('Getting transactions from Etherscan');
     const tokenTransferResult = await axios.get(uri_tokenTransfer);
     let tokenTransfers = tokenTransferResult.data.result;
     tokenTransfers.map(tx => {
@@ -39,7 +40,7 @@ module.exports = {
     internalTransactions.map(tx => {
       tx.type = 'INTERNAL';
     })
-    
+    console.log('Data received');
     // console.log(internalTransactions);
     // transactions.push(...normalTransactions);
     // console.log('tok x: ', tokenTransfers.length);
@@ -55,6 +56,7 @@ module.exports = {
     // console.log('first: ', transactions[0]);
     // console.log('last: ', transactions[transactions.length-1]);
 
+    console.log('Formatting...');
     let txns = [];
     transactions.map(tx => {
       const timestamp = tx.timeStamp;
@@ -130,13 +132,16 @@ module.exports = {
     // let txSorted = _.orderBy(txns, (o) => {
     //   return o.blockNumber
     // })
+    console.log('Sorting...');
     let txSorted = _.orderBy(txns, ['blockNumber'], 'desc')
     
     // txSorted.map(tx => {
     //   console.log(tx.blockNumber);
     // })
     // console.log(txns[txns.length - 1]);
+    
     res.send(txSorted);
+    console.log('Done');
   },
   normalTransactions: async (req, res) => {
     console.log('Get Wallet Transactionz');
