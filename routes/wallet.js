@@ -18,7 +18,7 @@ module.exports = {
     const wallet = wallets[0];
     const uri_tokenTransfer = `https://api.etherscan.io/api?module=account&action=tokentx&address=${wallet}&startblock=0&endblock=999999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`
     const uri_normalTx = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
-    const uri_internalTransactions = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
+    // const uri_internalTransactions = `https://api.etherscan.io/api?module=account&action=txlist&address=${wallet}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
     
     console.log('Getting transactions from Etherscan');
     const tokenTransferResult = await axios.get(uri_tokenTransfer);
@@ -35,11 +35,11 @@ module.exports = {
       tx.type = 'NORMAL';
     })
 
-    const internalTransactionsResult = await axios.get(uri_internalTransactions);
-    let internalTransactions = internalTransactionsResult.data.result;
-    internalTransactions.map(tx => {
-      tx.type = 'INTERNAL';
-    })
+    // const internalTransactionsResult = await axios.get(uri_internalTransactions);
+    // let internalTransactions = internalTransactionsResult.data.result;
+    // internalTransactions.map(tx => {
+    //   tx.type = 'INTERNAL';
+    // })
     console.log('Data received');
     // console.log(internalTransactions);
     // transactions.push(...normalTransactions);
@@ -49,7 +49,7 @@ module.exports = {
     // const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
     // console.log('sum: ', sum);
     let transactions = tokenTransfers.concat(normalTransactions);
-    transactions = transactions.concat(internalTransactions);
+    // transactions = transactions.concat(internalTransactions);
     // console.log('array length: ', transactions.length);
     // console.log('after normal: ', transactions.length);
 
