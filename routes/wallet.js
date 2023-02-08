@@ -7,7 +7,7 @@ const _ = require('lodash');
 const BigNumber = require('bignumber.js');
 const ethers = require('ethers');
 
-const ETHERSCAN_API_KEY = 'WG3CNUR4BRCXMPPUWCWTGFV9X91KKCTRNW';
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 module.exports = {
   walletTransactions: async (req, res) => {
@@ -26,8 +26,6 @@ module.exports = {
     tokenTransfers.map(tx => {
       tx.type = 'TOKEN_TRANSFER';
     })
-    // console.log(tokenTransfers);
-    // console.log('token tx txns: ', transactions.length);
 
     const normalTxResult = await axios.get(uri_normalTx);
     let normalTransactions = normalTxResult.data.result;
@@ -35,28 +33,12 @@ module.exports = {
       tx.type = 'NORMAL';
     })
 
-    // const internalTransactionsResult = await axios.get(uri_internalTransactions);
-    // let internalTransactions = internalTransactionsResult.data.result;
-    // internalTransactions.map(tx => {
-    //   tx.type = 'INTERNAL';
-    // })
     console.log('Data received');
-    // console.log(internalTransactions);
-    // transactions.push(...normalTransactions);
-    // console.log('tok x: ', tokenTransfers.length);
-    // console.log('norm: ', normalTransactions.length);
-    // console.log('internal: ', internalTransactions.length);
-    // const sum = tokenTransfers.length + normalTransactions.length + internalTransactions.length;
-    // console.log('sum: ', sum);
+
     let transactions = tokenTransfers.concat(normalTransactions);
-    // transactions = transactions.concat(internalTransactions);
-    // console.log('array length: ', transactions.length);
-    // console.log('after normal: ', transactions.length);
-
-    // console.log('first: ', transactions[0]);
-    // console.log('last: ', transactions[transactions.length-1]);
-
+   
     console.log('Formatting...');
+    
     let txns = [];
     transactions.map(tx => {
       const timestamp = tx.timeStamp;
@@ -64,15 +46,6 @@ module.exports = {
       const dateFormatted = dateFormat(date, 'isoDateTime', true);
       
       tx.time = dateFormatted;
-
-      // put the time and timestamp at the top of the object keys for readability in the sheet
-      // let objectOrder = {
-      //   'time': null,
-      //   'timeStamp': null,
-      //   'blockNumber': null
-      // };
-
-      // const newTx = Object.assign(objectOrder, tx);
 
       let tokenName;
       let tokenSymbol;
@@ -99,11 +72,8 @@ module.exports = {
         flow = 'IN';
       }
 
-      // console.log(tokenSymbol);
       const parse = ethers.utils.parseUnits(tx.value, 18-tokenDecimal);
       const valueEth = web3.utils.fromWei(parse.toString(), 'ether');
-
-      // console.log('Value ETH: ', valueEth);
       
       let obj = {
         time: tx.time,
@@ -129,16 +99,8 @@ module.exports = {
       txns.push(obj);
     });
 
-    // let txSorted = _.orderBy(txns, (o) => {
-    //   return o.blockNumber
-    // })
     console.log('Sorting...');
     let txSorted = _.orderBy(txns, ['blockNumber'], 'desc')
-    
-    // txSorted.map(tx => {
-    //   console.log(tx.blockNumber);
-    // })
-    // console.log(txns[txns.length - 1]);
     
     res.send(txSorted);
     console.log('Done');

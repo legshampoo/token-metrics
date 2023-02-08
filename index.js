@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res) => {
-  res.send('Hello Worldz!');
+  res.send('home');
 })
 
 app.post('/coin-prices', coinPrices)
